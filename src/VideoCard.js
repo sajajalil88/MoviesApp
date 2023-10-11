@@ -64,7 +64,7 @@ const VideoCard = ({ route }) => {
       });
   };
   const getSimilarMovies = (movieId) => {
-    // First, fetch the details of the selected movie to get its genre information
+   
     axios
       .get(`https://api.themoviedb.org/3/movie/${movieId}`, {
         params: {
@@ -76,13 +76,13 @@ const VideoCard = ({ route }) => {
         const selectedMovie = response.data;
         const genreIds = selectedMovie.genres.map((genre) => genre.id);
   
-        // Now that we have the genre information, we can fetch similar movies
+     
         axios
           .get('https://api.themoviedb.org/3/discover/movie', {
             params: {
               api_key: '5687eb97cfae2d5641269e1c0c74eefc',
               language: 'en-US',
-              with_genres: genreIds.join(','), // Include genre information
+              with_genres: genreIds.join(','),
             },
           })
           .then((response) => {
