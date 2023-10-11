@@ -23,7 +23,7 @@ const Favorites = ({ route }) => {
     };
 
     getFavorites();
-    clearLocalStorage();
+    // clearLocalStorage();
   }, []);
 
   const clearLocalStorage = async () => {
@@ -51,7 +51,7 @@ const Favorites = ({ route }) => {
   }
   return (
 
-    <View>
+ 
     <ScrollView>
 
 <View style={styles.headerContainer}>
@@ -85,8 +85,7 @@ const Favorites = ({ route }) => {
 
       
     </ScrollView>
-    <FooterNavigation marginTop={625} height={80} />
-    </View>
+    
   );
 };
 

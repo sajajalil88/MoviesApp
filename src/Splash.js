@@ -20,7 +20,6 @@ const Splash = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.text}>Welcome</Text> */}
       <View style={styles.ImageContainer}>
       <Image
   source={require('./images/wallpaper.jpg')}

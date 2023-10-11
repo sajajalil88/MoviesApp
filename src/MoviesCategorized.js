@@ -42,7 +42,7 @@ const MoviesCategorized = () => {
   }
   return (
     
-  
+   
     <View style={styles.container}>
 
 <FlatList
@@ -67,14 +67,9 @@ const MoviesCategorized = () => {
 />
 
 
-
-
-
-
     </View>
-   
-
-     
+ 
+  
   );
 };
 

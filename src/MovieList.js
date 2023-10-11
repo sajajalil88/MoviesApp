@@ -9,13 +9,13 @@ import { useNavigation } from '@react-navigation/native';
 const MovieList = () => {
   const [popularMovies, setPopularMovies] = useState([]);
   const [latestMovies, setLatestMovies] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('All'); 
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [limitedMovies, setAllMovies] = useState([]);
   const [categories, setCategories] = useState([]);
   const [genreMapping, setGenreMapping] = useState({});
 
-  
-  
+
+
 
   const apiKey = '5687eb97cfae2d5641269e1c0c74eefc';
   const navigation = useNavigation();
@@ -34,17 +34,19 @@ const MovieList = () => {
           api_key: apiKey,
           language: 'en-US',
           sort_by: 'popularity.desc',
-          page: 1 ,
+          page: 1,
         },
       })
       .then((response) => {
         setPopularMovies(response.data.results);
-        
+
       })
       .catch((error) => {
         console.error('Error fetching popular movies:', error);
       });
   };
+
+
 
   const getLatestMovies = () => {
 
@@ -67,7 +69,7 @@ const MovieList = () => {
   const getAllMovies = async () => {
     const totalPages = 10;
     let allMovies = [];
-  
+
     for (let page = 1; page <= totalPages; page++) {
       try {
         const response = await axios.get(`https://api.themoviedb.org/3/discover/movie`, {
@@ -78,17 +80,17 @@ const MovieList = () => {
             include_adult: false,
           },
         });
-  
+
         const limitedMovies = response.data.results;
         allMovies = [...allMovies, ...limitedMovies];
       } catch (error) {
         console.error('Error fetching movies for page', page, ':', error);
       }
     }
-  
+
     setAllMovies(allMovies);
   };
-  
+
   const getGenre = () => {
     axios
       .get(`https://api.themoviedb.org/3/genre/movie/list`, {
@@ -130,63 +132,64 @@ const MovieList = () => {
 
       <ScrollView >
         <View>
+
+
+          {/* dots working */}
+          <View>
+            <Swiper style={{ height: 400 }} showsPagination={true} dotStyle={{ backgroundColor: 'gray', width: 10, height: 10 }} activeDotStyle={{ backgroundColor: '#ff4d4d', width: 20, height: 10 }}>
+              {popularMovies.slice(0, 5).map((movie) => (
+                <View key={movie.id} style={{ flex: 1 }}>
+                  <Image
+                    source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
+                    style={{ flex: 1 }}
+                    resizeMode="cover"
+                  />
+                </View>
+              ))}
+            </Swiper>
+            </View>
           
 
-        {/* dots working */}
-       <View>
-        <Swiper style={{ height: 400 }} showsPagination={true} dotStyle={{ backgroundColor: 'gray', width: 10, height: 10 }} activeDotStyle={{ backgroundColor: '#ff4d4d', width: 20, height: 10 }}>
-            {popularMovies.slice(0, 5).map((movie) => (
-              <View key={movie.id} style={{ flex: 1 }}>
-                <Image
-                  source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
-                  style={{ flex: 1 }}
-                  resizeMode="cover"
-                />
-              </View>
-            ))}
-          </Swiper>
-          </View>
-      
-         
-          
 
-        <Text style={styles.categoryText}>Categories</Text>
+
+
+          <Text style={styles.categoryText}>Categories</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 30 }}>
-  <FlatList
-    data={categories}
-    horizontal
-    renderItem={({ item }) => (
-      <View style={{alignItems:'center', justifyContent:'center'}}>
-<TouchableOpacity
-        style={
-          selectedCategory === item
-            ? [styles.categoryButton, styles.selectedCategoryButton]
-            : styles.categoryButton
-            
-        }
-        onPress={() => handleCategoryClick(item)}
-      >
-        <Text
-          style={
-            selectedCategory === item
-              ? [styles.buttonText, styles.selectedButtonText]
-              : styles.buttonText
-          }
-        >
-          {item}
-        </Text>
-      </TouchableOpacity>
-      </View>
-      
-    )}
-    keyExtractor={(item) => item}
-  />
-</ScrollView>
+            <FlatList
+              data={categories}
+              horizontal
+              renderItem={({ item }) => (
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                  <TouchableOpacity
+                    style={
+                      selectedCategory === item
+                        ? [styles.categoryButton, styles.selectedCategoryButton]
+                        : styles.categoryButton
 
-        
+                    }
+                    onPress={() => handleCategoryClick(item)}
+                  >
+                    <Text
+                      style={
+                        selectedCategory === item
+                          ? [styles.buttonText, styles.selectedButtonText]
+                          : styles.buttonText
+                      }
+                    >
+                      {item}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+              )}
+              keyExtractor={(item) => item}
+            />
+          </ScrollView>
+
+
 
           <View>
-            <Text style={{ marginTop: 30, marginLeft: 5 , fontWeight:'bold'}}>Most Popular</Text>
+            <Text style={{ marginTop: 30, marginLeft: 5, fontWeight: 'bold',  fontSize:16 }}>Most Popular</Text>
             <FlatList style={styles.PopularList}
               data={popularMovies}
               horizontal
@@ -210,9 +213,9 @@ const MovieList = () => {
           </View>
 
           <View>
-            <Text style={{ marginTop: 30, marginLeft: 5 ,fontWeight:'bold'}}>Latest Movies</Text>
+            <Text style={{ marginTop: 30, marginLeft: 5, fontWeight: 'bold' , fontSize:16}}>Latest Movies</Text>
             <FlatList style={styles.LatestList}
-              data={latestMovies.filter((movie) => movie.poster_path)} 
+              data={latestMovies.filter((movie) => movie.poster_path)}
               horizontal
               renderItem={({ item }) => (
                 <View key={item.id}>
@@ -250,16 +253,16 @@ const MovieList = () => {
 const styles = StyleSheet.create({
   categoryButton: {
     padding: 8,
-    backgroundColor: '#004080', 
+    backgroundColor: '#004080',
     borderRadius: 15,
     width: 95,
     marginLeft: 10,
-    height:33
+    height: 33
   },
   buttonText: {
     color: 'white',
-    alignContent:'center',
-   marginLeft:5
+    alignContent: 'center',
+    marginLeft: 5
   },
   PopularList: {
     marginTop: 10,
@@ -268,6 +271,7 @@ const styles = StyleSheet.create({
   LatestList: {
     marginTop: 10,
     marginLeft: 5,
+    
 
   },
   selectedCategoryButton: {
@@ -275,9 +279,10 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     marginTop: 10,
-    marginLeft: 10,
+    marginLeft: 7,
     marginBottom: -15,
-    fontWeight:'bold'
+    fontWeight: 'bold',
+    fontSize:16
   }
 });
 
